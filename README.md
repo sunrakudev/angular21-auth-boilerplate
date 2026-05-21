@@ -1,59 +1,55 @@
-# AngularAuthBoilerplate
+# IPT Angular 21 Boilerplate
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.10.
+Email sign up with verification, authentication & forgot password built with Angular 21.
 
-## Development server
+**Live Demo:** https://ipt-2026-frontend.onrender.com  
+**Backend API:** https://ipt-2026-backend.onrender.com  
+**API Docs:** https://ipt-2026-backend.onrender.com/api-docs
 
-To start a local development server, run:
+## Features
 
-```bash
-ng serve
+- Email sign up and verification
+- JWT authentication with auto-refresh tokens
+- Role-based authorization (Admin / User)
+- Forgot password and reset password via email
+- Profile management (update details, change password, delete account)
+- Admin panel to view and manage all accounts
+
+## Tech Stack
+
+- Angular 21 (NgModule architecture)
+- Bootstrap 5
+- TypeScript
+- RxJS
+
+## Project Structure
+
+```
+src/app/
+├── account/       # Login, register, verify email, forgot/reset password
+├── home/          # Home page (authenticated users)
+├── profile/       # View and update profile
+├── admin/         # Admin panel and account management
+├── _helpers/      # JWT interceptor, error interceptor, fake backend
+├── _models/       # Account and Role models
+└── _services/     # Account service, alert service
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Local Development
 
 ```bash
-ng generate component component-name
+npm install
+npm start
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Runs on `http://localhost:4200`. Uses a fake backend in development (no server needed).
 
-```bash
-ng generate --help
-```
+## Deployment
 
-## Building
+Build command: `npm run build`  
+Output directory: `dist/ipt-2026-frontend`  
+Deployed as a static site on Render.
 
-To build the project run:
+## Author
 
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+[Earl Justine Coyoca](https://github.com/sunrakudev)
