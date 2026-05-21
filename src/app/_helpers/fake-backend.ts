@@ -54,8 +54,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             const account = accounts.find(x => x.email === email && x.password === password && x.isVerified);
             if (!account) return error('Email or password is incorrect');
             account.refreshTokens = account.refreshTokens || [];
-            account.refreshTokens.push(generateRefreshToken());
+            const newRefreshToken = generateRefreshToken();
+            account.refreshTokens.push(newRefreshToken);
             localStorage.setItem(accountsKey, JSON.stringify(accounts));
+            setRefreshTokenCookie(newRefreshToken);
             return ok({
                 ...basicDetails(account),
                 jwtToken: generateJwtToken(account)
@@ -63,13 +65,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function refreshToken() {
-            const refreshToken = getRefreshToken();
-            if (!refreshToken) return unauthorized();
-            const account = accounts.find(x => x.refreshTokens?.includes(refreshToken));
+            const token = getRefreshToken();
+            if (!token) return unauthorized();
+            const account = accounts.find(x => x.refreshTokens?.includes(token));
             if (!account) return unauthorized();
-            account.refreshTokens = account.refreshTokens.filter((t: string) => t !== refreshToken);
-            account.refreshTokens.push(generateRefreshToken());
+            account.refreshTokens = account.refreshTokens.filter((t: string) => t !== token);
+            const newRefreshToken = generateRefreshToken();
+            account.refreshTokens.push(newRefreshToken);
             localStorage.setItem(accountsKey, JSON.stringify(accounts));
+            setRefreshTokenCookie(newRefreshToken);
             return ok({
                 ...basicDetails(account),
                 jwtToken: generateJwtToken(account)
@@ -77,13 +81,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function revokeToken() {
-            const refreshToken = getRefreshToken();
-            if (!refreshToken) return unauthorized();
-            const account = accounts.find(x => x.refreshTokens?.includes(refreshToken));
+            const token = getRefreshToken();
+            if (!token) return unauthorized();
+            const account = accounts.find(x => x.refreshTokens?.includes(token));
             if (account) {
-                account.refreshTokens = account.refreshTokens.filter((t: string) => t !== refreshToken);
+                account.refreshTokens = account.refreshTokens.filter((t: string) => t !== token);
                 localStorage.setItem(accountsKey, JSON.stringify(accounts));
             }
+            clearRefreshTokenCookie();
             return ok();
         }
 
@@ -234,8 +239,17 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             return Date.now().toString();
         }
 
-        function getRefreshToken() {
-            return request.headers.get('Cookie')?.match(/refreshToken=([^;]+)/)?.[1] ?? null;
+        function getRefreshToken(): string | null {
+            const match = document.cookie.match(/fakeRefreshToken=([^;]+)/);
+            return match ? match[1] : null;
+        }
+
+        function setRefreshTokenCookie(token: string) {
+            document.cookie = `fakeRefreshToken=${token}; path=/`;
+        }
+
+        function clearRefreshTokenCookie() {
+            document.cookie = 'fakeRefreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
         }
     }
 }

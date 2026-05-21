@@ -67,6 +67,7 @@ export class UpdateComponent implements OnInit {
             .pipe(first())
             .subscribe(() => {
                 this.alertService.success('Account deleted successfully', { keepAfterRouteChange: true });
+                this.accountService.logout();
             });
     }
 }
