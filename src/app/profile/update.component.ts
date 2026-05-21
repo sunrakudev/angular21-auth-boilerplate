@@ -8,7 +8,7 @@ import { MustMatch } from '@app/_helpers';
 
 @Component({ templateUrl: 'update.component.html', standalone: false })
 export class UpdateComponent implements OnInit {
-    account = this.accountService.accountValue!;
+    account: any;
     form!: FormGroup;
     submitting = false;
     submitted = false;
@@ -20,7 +20,9 @@ export class UpdateComponent implements OnInit {
         private router: Router,
         private accountService: AccountService,
         private alertService: AlertService
-    ) {}
+    ) {
+        this.account = this.accountService.accountValue;
+    }
 
     ngOnInit() {
         this.form = this.formBuilder.group({
