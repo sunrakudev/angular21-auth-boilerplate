@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, finalize } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { Account } from '@app/_models';
 
@@ -94,7 +94,12 @@ export class AccountService {
     }
 
     delete(id: string) {
-        return this.http.delete(`${baseUrl}/${id}`);
+        return this.http.delete(`${baseUrl}/${id}`)
+            .pipe(finalize(() => {
+                // auto logout if the logged in account was deleted
+                if (id === this.accountValue?.id)
+                    this.logout();
+            }));
     }
 
     private refreshTokenTimeout?: any;
