@@ -2,9 +2,9 @@
 
 Email sign up with verification, authentication & forgot password built with Angular 21.
 
-**Live Demo:** https://ipt-2026-frontend.onrender.com  
-**Backend API:** https://ipt-2026-backend.onrender.com  
-**API Docs:** https://ipt-2026-backend.onrender.com/api-docs
+**Live Demo:** https://angular21-auth-boilerplate-bt8r.onrender.com  
+**Backend API:** https://node-mysql-api-0foa.onrender.com  
+**API Docs:** https://node-mysql-api-0foa.onrender.com/api-docs
 
 ## Features
 
