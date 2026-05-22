@@ -5,13 +5,20 @@ import { AccountService } from '@app/_services';
 @Component({ templateUrl: 'list.component.html', standalone: false })
 export class ListComponent implements OnInit {
     accounts: any[] = [];
+    loading = true;
 
     constructor(private accountService: AccountService) {}
 
     ngOnInit() {
         this.accountService.getAll()
             .pipe(first())
-            .subscribe(accounts => this.accounts = accounts);
+            .subscribe({
+                next: accounts => {
+                    this.accounts = accounts;
+                    this.loading = false;
+                },
+                error: () => this.loading = false
+            });
     }
 
     deleteAccount(id: string) {

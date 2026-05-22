@@ -24,10 +24,13 @@
                 </button>
             </td>
         </tr>
-        <tr *ngIf="!accounts.length">
+        <tr *ngIf="loading">
             <td colspan="5" class="text-center">
                 <span class="spinner-border spinner-border-sm"></span>
             </td>
+        </tr>
+        <tr *ngIf="!loading && !accounts.length">
+            <td colspan="5" class="text-center text-muted">No accounts found.</td>
         </tr>
     </tbody>
 </table>
